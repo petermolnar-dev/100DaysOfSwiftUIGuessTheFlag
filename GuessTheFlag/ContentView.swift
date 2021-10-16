@@ -42,7 +42,7 @@ struct ContentView: View {
                         .font(.largeTitle)
                         .fontWeight(.black)
                 }
-                
+                Spacer()
                 ForEach(0 ..< 3) { number in
                     Button (action: {
                         userSelected = number
@@ -55,6 +55,7 @@ struct ContentView: View {
                             .shadow(color: .black, radius: 2)
                     }
                 }
+                Spacer()
                 Text("Your score: \(userScore)")
                     .foregroundColor(.white)
                     .font(.largeTitle)
