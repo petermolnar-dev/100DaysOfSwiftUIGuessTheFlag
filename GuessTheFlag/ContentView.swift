@@ -18,6 +18,7 @@ struct ContentView: View {
     @State private var userSelected = 0
     
     @State private var rotationDegree = 0.0
+    @State private var notSelectedScaleAmount = 1.0
     @State private var notSelectedOpacity = 1.0
     
     var alertMessage: String {
@@ -51,16 +52,19 @@ struct ContentView: View {
                         userSelected = number
                         withAnimation(
                             Animation.easeInOut(duration: 0.75)) {
-                            self.rotationDegree += 360
-                            self.notSelectedOpacity = 0.25
-                            self.flagTapped()
-                        }
-                       
+                                self.rotationDegree += 360
+                                self.notSelectedOpacity = 0.25
+                                self.notSelectedScaleAmount = 0.45
+                                self.flagTapped()
+                            }
+                        
                     }) {
                         FlagImage(countryName: self.countries[number])
                     }
                     .rotation3DEffect(number == userSelected ? .degrees(rotationDegree) : .zero, axis: (x: 0, y: 1, z: 0))
                     .opacity(number == userSelected ? 1.0 : notSelectedOpacity)
+                    .scaleEffect(number != userSelected ? notSelectedScaleAmount : 1.0)
+                    
                 }
                 Spacer()
                 Text("Your score: \(userScore)")
@@ -92,7 +96,12 @@ struct ContentView: View {
     func askQuestion() {
         countries.shuffle()
         correctAnswer = Int.random(in: 0...2)
-        notSelectedOpacity = 1.0
+        withAnimation(
+            Animation.easeInOut(duration: 0.75)) {
+                notSelectedScaleAmount = 1.0
+                notSelectedOpacity = 1.0
+            }
+        
     }
 }
 
