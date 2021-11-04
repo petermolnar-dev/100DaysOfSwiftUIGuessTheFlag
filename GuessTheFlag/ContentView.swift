@@ -18,6 +18,7 @@ struct ContentView: View {
     @State private var userSelected = 0
     
     @State private var rotationDegree = 0.0
+    @State private var notSelectedOpacity = 1.0
     
     var alertMessage: String {
         if isCorrectAnswer {
@@ -51,6 +52,7 @@ struct ContentView: View {
                         withAnimation(
                             Animation.easeInOut(duration: 0.75)) {
                             self.rotationDegree += 360
+                            self.notSelectedOpacity = 0.25
                             self.flagTapped()
                         }
                        
@@ -58,6 +60,7 @@ struct ContentView: View {
                         FlagImage(countryName: self.countries[number])
                     }
                     .rotation3DEffect(number == userSelected ? .degrees(rotationDegree) : .zero, axis: (x: 0, y: 1, z: 0))
+                    .opacity(number == userSelected ? 1.0 : notSelectedOpacity)
                 }
                 Spacer()
                 Text("Your score: \(userScore)")
@@ -89,6 +92,7 @@ struct ContentView: View {
     func askQuestion() {
         countries.shuffle()
         correctAnswer = Int.random(in: 0...2)
+        notSelectedOpacity = 1.0
     }
 }
 
