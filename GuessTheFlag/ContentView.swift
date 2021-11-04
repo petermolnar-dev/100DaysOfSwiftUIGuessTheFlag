@@ -17,6 +17,8 @@ struct ContentView: View {
     @State private var userScore = 0
     @State private var userSelected = 0
     
+    @State private var rotationDegree = 0.0
+    
     var alertMessage: String {
         if isCorrectAnswer {
             return "Your score is: \(userScore)"
@@ -46,10 +48,16 @@ struct ContentView: View {
                 ForEach(0 ..< 3) { number in
                     Button (action: {
                         userSelected = number
-                        self.flagTapped()
+                        withAnimation(
+                            Animation.easeInOut(duration: 0.75)) {
+                            self.rotationDegree += 360
+                            self.flagTapped()
+                        }
+                       
                     }) {
                         FlagImage(countryName: self.countries[number])
                     }
+                    .rotation3DEffect(number == userSelected ? .degrees(rotationDegree) : .zero, axis: (x: 0, y: 1, z: 0))
                 }
                 Spacer()
                 Text("Your score: \(userScore)")
